@@ -16,7 +16,6 @@
 
   - name: Create app Directory
     ansible.builtin.file:
-      name: roboshop
       path: /app
       state: directory   # if not mentioned, it will consider as a file
 
