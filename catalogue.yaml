@@ -55,3 +55,14 @@
     ansible.builtin.package:
       name: mongodb-org-shell
       state: present
+
+# in sever, to check count
+#  mongo --host mongodb.gokul.shop --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+
+  - name: get the catagories count
+    ansible.builtin.command: mongo --host mongodb.gokul.shop --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+    register: product_count
+
+  - name: print the count
+    ansible.builtin.debug:
+      msg: "product count: {{product_count}}"
