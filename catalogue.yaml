@@ -18,7 +18,12 @@
       path: /app
       state: directory
 
-  - name: Remove user 'john' and delete home directory
+  - name: Kill roboshop user's processes
+    ansible.builtin.shell: |
+      pkill -u roboshop
+    ignore_errors: true    
+
+  - name: Remove user 'roboshop' and delete home directory
     ansible.builtin.user:
       name: roboshop
       state: absent
