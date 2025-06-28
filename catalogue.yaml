@@ -81,7 +81,7 @@
 
   - name: load cataloguedata
     ansible.builtin.command: mongo --host mongodb.gokul.shop < /app/schema/catalogue.js
-    when: product_count == 0
+    when: product_count == "0"
 
   - name: start and enable catalogue
     ansible.builtin.service:
