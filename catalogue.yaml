@@ -67,13 +67,19 @@
   #   ansible.builtin.debug:
   #     msg: "product count: {{product_count}}"
 
-  - name: load cataloguedata
-    ansible.builtin.command: mongo --host mongodb.gokul.shop < /app/schema/catalogue.js
-    when: product_count == 0
-
 #output
 # TASK [print the count] *************************************************************************************************************************************
 #ok: [catalogue.gokul.shop] => {
 #    "msg": "product count: {'changed': True, 'stdout': '11', 'stderr': '', 'rc': 0, 'cmd': ['mongo', '--host', 'mongodb.gokul.shop', '--quiet', '--eval', 'db = db.getSiblingDB(\"catalogue\"); db.products.count()'], 'start': '2025-06-28 00:49:40.739736', 'end': '2025-06-28 00:49:40.825329', 'delta': '0:00:00.085593', 'msg': '', 'stdout_lines': ['11'], 'stderr_lines': [], 'failed': False}"
 #}
+
+  - name: load cataloguedata
+    ansible.builtin.command: mongo --host mongodb.gokul.shop < /app/schema/catalogue.js
+    when: product_count == 0
+
+  - name: start and enable catalogue
+    ansible.builtin.service:
+      name: catalogue
+      state: restarted
+      enabled: yes
     
