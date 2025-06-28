@@ -2,29 +2,30 @@
   hosts: redis
   become: yes
   tasks:
-  - name: Install remi release
-    ansible.builtin.dnf:
-      name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-      state: present
-      disable_gpg_check: true
+    - name: Install Remi release (EL8 compatible)
+      ansible.builtin.dnf:
+        name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+        state: present
+        disable_gpg_check: true
 
-  # The disable_gpg_check: true option in Ansible is used in package installation tasks to skip verifying the GPG signature of the package. It can be helpful in environments where packages are unsigned or GPG keys are not available. However, it’s considered a security risk in production, because it disables a key integrity check meant to verify package authenticity.
+    - name: Enable Redis
+      ansible.builtin.command: dnf module enable redis:remi-6.2 -y
+      args:
+        warn: false
 
-  - name: enable redis
-    ansible.builtin.command: dnf module enable redis:remi-6.2 -y
+    - name: Install Redis
+      ansible.builtin.package:
+        name: redis
+        state: present
 
-  - name: Install redis
-    ansible.builtin.package:
-      name: redis
-      state: present
+    - name: Allow remote connections
+      ansible.builtin.replace:
+        path: /etc/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
 
-  - name: Allow remote connections
-    ansible.builtin.replace:
-      path: /etc/redis.conf
-      regexp: '127.0.0.1'
-      replace: '0.0.0.0'
-
-  - name: start and enable redis
-    ansible.builtin.service:
-      name: redis
-      state: restarted        
+    - name: Start and enable Redis
+      ansible.builtin.service:
+        name: redis
+        state: restarted
+        enabled: true
