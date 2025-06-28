@@ -4,13 +4,13 @@
   tasks:
   - name: Install remi release
     ansible.builtin.dnf:
-      name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+      name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
       state: present
       disable_gpg_check: true
 
   # The disable_gpg_check: true option in Ansible is used in package installation tasks to skip verifying the GPG signature of the package. It can be helpful in environments where packages are unsigned or GPG keys are not available. However, it’s considered a security risk in production, because it disables a key integrity check meant to verify package authenticity.
 
-  - name: enale redis
+  - name: enable redis
     ansible.builtin.command: dnf module enable redis:remi-6.2 -y
 
   - name: Install redis
