@@ -15,7 +15,7 @@
   - name: Create HTML Directory
     ansible.builtin.file:
       path: /usr/share/nginx/html
-      state: directory    
+      state: directory
 
   - name: Download web application
     ansible.builtin.get_url:
@@ -37,4 +37,4 @@
     ansible.builtin.service:
       name: nginx
       state: restarted
-      enabled: yes    
+      enabled: yes
